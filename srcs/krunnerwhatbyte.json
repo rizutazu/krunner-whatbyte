@@ -1,0 +1,16 @@
+{
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "",
+        "Name": "Rizu"
+      }
+    ],
+    "Description": "Simple byte utility",
+    "EnabledByDefault": true,
+    "Icon": "accessories-character-map",
+    "Id": "KRunnerWhatByte",
+    "Name": "What Byte",
+    "Version": "0.0.1"
+  }
+}
