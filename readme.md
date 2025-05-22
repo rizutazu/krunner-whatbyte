@@ -1,6 +1,6 @@
 # KRunner WhatByte
 
-Simple byte utility
+Simple byte utility (KRunner plugin)
 
 ## Usage
 
@@ -19,11 +19,29 @@ Action
 #### `what input`: display byte representation of input
 
 Example: 
+  - Two matches will be given
+  - Press enter to copy (has line break for each character, doesn't show in KRunner)
 
-`what こんにちは` => (two matches will be given)
-  - `{こ} => {0xe3, 0x81, 0x93} {ん} => {0xe3, 0x82, 0x93} {に} => {0xe3, 0x81, 0xab} {ち} => {0xe3, 0x81, 0xa1} {は} => {0xe3, 0x81, 0xaf}`
+`what こんにちは` =>
+  - `'こ' => {0xe3, 0x81, 0x93}, 
+'ん' => {0xe3, 0x82, 0x93}, 
+'に' => {0xe3, 0x81, 0xab}, 
+'ち' => {0xe3, 0x81, 0xa1}, 
+'は' => {0xe3, 0x81, 0xaf}`
   - `5 character(s), 15 byte(s)`
 
 `what hi` => 
-  - `{h} => {0x68} {i} => {0x69}`
+  - `'h' => {0x68}, 
+'i' => {0x69}`
   - `2 character(s), 2 byte(s)`
+
+## Install & Uninstall
+
+Install:
+
+1. make sure `cmake` / `KDE6` / `Qt6` developing environment is prepared.
+2. Run `./install.sh`
+
+Uninstall:
+
+Run `./uninstall.sh`

@@ -5,14 +5,14 @@
 // init       | space | init
 // init       | {     | next_value
     // next_value | space | next_value
-    // next_value | 1-9   | dec_value     | v = v * 10 + input
-        // dec_value | 0-9   | dec_value | v = v * 10 + input
+    // next_value | 1-9   | dec_value     | v = v
+        // dec_value | 0-9   | dec_value | v = v * 10 + v
         // dec_value | space | value_fin | push v
         // dec_value | ,     | next_value
         // dec_value | }     | end       | push v
     // next_value | 0   | hex0
     // hex0       | x   | hex_x
-    // hex_x      | 0-f | hex_value
+    // hex_x      | 0-f | hex_value | v = input
         // hex_value | 0~f   | hex_value | v = v * 16 + v
         // hex_value | space | value_fin | push v
         // hex_value | ,     | next_value

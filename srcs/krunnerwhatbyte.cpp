@@ -11,9 +11,7 @@ KRunnerWhatByte::KRunnerWhatByte(QObject *parent, const KPluginMetaData &metaDat
         : AbstractRunner(parent, metaData) {
 }
 
-KRunnerWhatByte::~KRunnerWhatByte() {
-
-}
+KRunnerWhatByte::~KRunnerWhatByte() = default;
 static const char hex[] = {
     '0', '1', '2', '3',
     '4', '5', '6', '7',
@@ -51,7 +49,7 @@ void KRunnerWhatByte::handleWhat(KRunner::RunnerContext &context, const QString 
     for (long long int i = 0; i < arg.length(); i++) {
 
         const QChar cc = arg.data()[i];
-        s += QStringLiteral("{") + cc + QStringLiteral("} => {");
+        s += QStringLiteral("'") + cc + QStringLiteral("' => {");
         const QByteArray b = QString(cc).toUtf8();
         for (long long int j = 0; j < b.length(); j++) {
             const char c = b[j];
@@ -68,7 +66,7 @@ void KRunnerWhatByte::handleWhat(KRunner::RunnerContext &context, const QString 
         }
 
         if (i != arg.length() - 1) {
-            s += QStringLiteral("} ");
+            s += QStringLiteral("}, \n");
         } else {
             s += QStringLiteral("}");
         }
@@ -98,7 +96,7 @@ void KRunnerWhatByte::handlePrint(KRunner::RunnerContext &context, const QString
     } else {
         parseEscapeStringArray(trimmed, result);
     }
-    if (result.length() > 0) {
+    if (!result.isEmpty()) {
         QByteArray b;   // actual constructed data
         std::string s;  // for display only
         for (const int i : result) {
