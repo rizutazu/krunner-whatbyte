@@ -9,7 +9,6 @@
     "Description": "Simple byte utility",
     "EnabledByDefault": true,
     "Icon": "accessories-character-map",
-    "Id": "KRunnerWhatByte",
     "Name": "What Byte",
     "License": "GPL",
     "Version": "0.0.1"
