@@ -6,25 +6,27 @@ Simple byte utility (KRunner plugin)
 
 #### `print <value>`
 
-*Construct content by given hexadecimal value array*
+*Construct text by given hexadecimal value array*
 
 Syntax of `<value>`:
   - `\x11\xab\xcD \x12`: `\x` + one or two hex digits, space is allowed between each escape character
   - `{12, 0x34, 0xEf}`: C-style array, decimal or hexadecimal value, an extra comma is allowed after last element
 
-Action
+Notice:
   - Press enter to copy constructed text
   - If the constructed text contains malformed Unicode character, it will be replaced with the placeholder character `�` 
-    - In this case, a special action (shortcut: Shift + Return) can be performed to copy the raw data as a file, then you can paste it in your file explorer
+    - In this case, you can copy the raw data as *a file* by selecting the action, so that you can paste it somewhere else to get exactly what you want
 
 
 #### `what <input>`
 
 *Display byte representation of input*
 
-Example: 
-  - Two matches will be given
-  - Press enter to copy
+Notice:
+  - Two matches will be given (see examples below)
+  - Press enter to copy what-it-shows, or selecting the action to copy the whole input as a C array.
+
+Examples:
 
 `what こんにちは` =>
   - `'こ' => {0xe3, 0x81, 0x93}, 'ん' => {0xe3, 0x82, 0x93}, 'に' => {0xe3, 0x81, 0xab}, 'ち' => {0xe3, 0x81, 0xa1}, 

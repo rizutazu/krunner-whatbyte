@@ -13,7 +13,8 @@ public:
     void match(KRunner::RunnerContext &context) override;
     void run(const KRunner::RunnerContext &context, const KRunner::QueryMatch &match) override;
 private:
-    static KRunner::Action copyAction;
+    static KRunner::Action copyAsFileAction;
+    static KRunner::Action copyAsCArrayAction;
     void handleWhat(KRunner::RunnerContext &context, const QString &arg);
     void handlePrint(KRunner::RunnerContext &context, const QString &arg);
 };
