@@ -1,42 +1,11 @@
 #include "krunnerwhatbyte.h"
 #include "sm.h"
+#include "helper.h"
 #include <QIcon>
 #include <QApplication>
 #include <QClipboard>
 #include <QMimeData>
 #include <QTextBoundaryFinder>
-
-
-QString stringToHexRepresentation(const QString &str) {
-    static const char hex[] = {
-        '0', '1', '2', '3',
-        '4', '5', '6', '7',
-        '8', '9', 'a', 'b',
-        'c', 'd', 'e', 'f'
-    };
-    QString result;
-    QByteArray b = str.toUtf8();
-    for (qsizetype i = 0; i < b.length(); i++) {
-        const char cc = b[i];
-        const char high = hex[(cc & 0xf0) >> 4];
-        const char low = hex[cc & 0xf];
-
-        result += QStringLiteral("0x");
-        if (high != '0') {
-            result += QChar::fromLatin1(high);
-        }
-        result += QChar::fromLatin1(low);
-
-        if (i != b.length() - 1) {
-            result += QStringLiteral(", ");
-        }
-    }
-    if (b.length() > 0) {
-        result = QStringLiteral("{") + result + QStringLiteral("}");
-    }
-    return result;
-}
-
 
 KRunner::Action KRunnerWhatByte::copyAsFileAction = KRunner::Action(QStringLiteral("copyFile"), QStringLiteral("application-octet-stream"), QStringLiteral("Copy as a file"));
 KRunner::Action KRunnerWhatByte::copyAsCArrayAction = KRunner::Action(QStringLiteral("copyArray"), QStringLiteral("edit-copy"), QStringLiteral("Copy as a C array"));
@@ -81,7 +50,7 @@ void KRunnerWhatByte::run(const KRunner::RunnerContext &context, const KRunner::
 void KRunnerWhatByte::handleWhat(KRunner::RunnerContext &context, const QString &arg) {
     QString matchText;
     QTextBoundaryFinder finder(QTextBoundaryFinder::Grapheme, arg);
-    qsizetype next, prev = 0, charCount = 0;
+    qsizetype next, prev = 0, charCount = 0, zeroWidthCount = 0;
 
     // find each unicode character
     while ((next = finder.toNextBoundary()) != -1) {
@@ -98,6 +67,9 @@ void KRunnerWhatByte::handleWhat(KRunner::RunnerContext &context, const QString 
 
         prev = next;
         charCount++;
+        if (isZeroWidthUnicode(word)) {
+            zeroWidthCount++;
+        }
     }
 
     if (charCount != 0) {
@@ -120,6 +92,10 @@ void KRunnerWhatByte::handleWhat(KRunner::RunnerContext &context, const QString 
     matchText.clear();
     matchText += QString::number(charCount) + QStringLiteral(" character(s), ");
     matchText += QString::number(arg.toStdString().length()) + QStringLiteral(" byte(s)");
+    if (zeroWidthCount != 0) {
+        matchText += QStringLiteral(", ")
+            + QString::number(zeroWidthCount) + QStringLiteral(" zero-width character(s) detected");
+    }
 
     matchStat.setRelevance(0);
     matchStat.setText(matchText);

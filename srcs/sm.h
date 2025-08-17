@@ -1,6 +1,7 @@
 #ifndef SM_H
 #define SM_H
 
+// sm => state machine
 #include <QString>
 #include <QList>
 

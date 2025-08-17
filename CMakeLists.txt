@@ -18,6 +18,7 @@ find_package (KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS Runner)
 set(krunner_whatbyte_SRCS
         srcs/sm.cpp
         srcs/krunnerwhatbyte.cpp
+        srcs/helper.cpp
         )
 
 kcoreaddons_add_plugin(krunner_whatbyte SOURCES ${krunner_whatbyte_SRCS} INSTALL_NAMESPACE "kf6/krunner")
