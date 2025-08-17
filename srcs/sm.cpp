@@ -1,5 +1,7 @@
 #include "sm.h"
 
+#define isSpace(c) (c == ' ' || c == '\n')
+
 // parse {0x12, 12, } array
 // state      | input | next state | action
 // init       | space | init
@@ -47,14 +49,14 @@ void parseValueStringArray(const QString &input, QList<int> &result) {
                     current = NEXT_VALUE;
                     break;
                 }
-                if (c != ' ') {
+                if (!isSpace(c)) {
                     current = ERROR;
                     break;
                 }
                 break;
             }
             case NEXT_VALUE: {
-                if (c == ' ') {
+                if (isSpace(c)) {
                     continue;
                 }
                 if (c == '0') {
@@ -122,7 +124,7 @@ void parseValueStringArray(const QString &input, QList<int> &result) {
                     }
                     break;
                 }
-                if (c == ' ') {
+                if (isSpace(c)) {
                     current = VALUE_FIN;
                     result.push_back(value);
                     value = 0;
@@ -151,7 +153,7 @@ void parseValueStringArray(const QString &input, QList<int> &result) {
                     }
                     break;
                 }
-                if (c == ' ') {
+                if (isSpace(c)) {
                     current = VALUE_FIN;
                     result.push_back(value);
                     value = 0;
@@ -173,7 +175,7 @@ void parseValueStringArray(const QString &input, QList<int> &result) {
                 break;
             }
             case VALUE_FIN: {
-                if (c == ' ') {
+                if (isSpace(c)) {
                     continue;
                 }
                 if (c == '}') {
@@ -228,7 +230,7 @@ void parseEscapeStringArray(const QString &input, QList<int> &result) {
     for (const char c : s) {
         switch (current) {
             case INIT: {
-                if (c == ' ') {
+                if (isSpace(c)) {
                     continue;
                 }
                 if (c == '\\') {
@@ -287,7 +289,7 @@ void parseEscapeStringArray(const QString &input, QList<int> &result) {
                     value = 0;
                     break;
                 }
-                if (c == ' ') {
+                if (isSpace(c)) {
                     current = INIT;
                     result.push_back(value);
                     value = 0;

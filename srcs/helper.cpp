@@ -32,27 +32,41 @@ QString stringToHexRepresentation(const QString &str) {
 }
 
 bool isZeroWidthUnicode(const QString &str) {
-     static const QStringList zeroWidthUnicodes = {
+
+    // separate zero-width unicode
+    static const QStringList zeroWidthUnicodes = {
         QStringLiteral("​"), // zwsp
         QStringLiteral("﻿"), // bom
         QStringLiteral("⁠"), // wj
         QStringLiteral("᠎") // mvs
     };
 
+    if (zeroWidthUnicodes.contains(str)) {
+        return true;
+    }
+
+    // zero-width joiner
     // joiners need special care, since QTextBoundaryFinder::Grapheme do not split them.
     static const QStringList zeroWidthJoiners = {
         QStringLiteral("‌"), // zwnj
         QStringLiteral("‍"), // zwj
     };
 
-    if (zeroWidthUnicodes.contains(str)) {
-        return true;
-    }
-
     for (const auto &s : zeroWidthJoiners) {
         if (str.contains(s)) {
             return true;
         }
     }
+
+    // variation selector: ef b8 80 ~ 8f
+    unsigned char vs[] = {0xef, 0xb8, 0x80, 0};
+
+    const char *s = str.toStdString().c_str();
+    for (; vs[2] <= 0x8f; vs[2]++) {
+        if (strstr(s, reinterpret_cast<char *>(vs))) {
+            return true;
+        }
+    }
+
     return false;
 }
